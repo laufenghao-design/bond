@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llava"
+version = "1.2.2.post1"
+description = "BOND image inference and reference-score generation for LLaVA-1.5."
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
+dependencies = [
+    "torch==2.1.2",
+    "torchvision==0.16.2",
+    "transformers==4.37.2",
+    "tokenizers==0.15.1",
+    "sentencepiece==0.1.99",
+    "shortuuid",
+    "accelerate==0.21.0",
+    "peft",
+    "bitsandbytes",
+    "numpy<2",
+    "scikit-learn==1.2.2",
+    "pillow",
+    "pandas",
+    "openpyxl",
+    "tqdm",
+    "opensimplex",
+    "requests",
+    "httpx==0.24.0",
+    "einops==0.6.1",
+    "einops-exts==0.0.4",
+    "timm==0.6.13",
+]
+
+[project.optional-dependencies]
+build = ["build", "twine"]
+dev = ["ruff==0.14.3"]
+
+[project.urls]
+"Upstream LLaVA" = "https://llava-vl.github.io"
+"Upstream LLaVA source" = "https://github.com/haotian-liu/LLaVA"
+
+[tool.setuptools.packages.find]
+include = ["llava*"]
+
+[tool.wheel]
+include = ["llava*"]
+
+# Formatting and syntax checks use the same configuration for both backbones.
+[tool.ruff]
+line-length = 119
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7"]
+
+[tool.ruff.format]
+quote-style = "preserve"
+docstring-code-format = false

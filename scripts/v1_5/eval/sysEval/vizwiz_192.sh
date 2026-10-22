@@ -1,0 +1,27 @@
+#!/bin/bash
+
+PROJECT_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+export PYTHONPATH="${PROJECT_ROOT}:${PROJECT_ROOT}/lmms-eval${PYTHONPATH:+:${PYTHONPATH}}"
+
+cd "$PROJECT_ROOT"
+
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+
+export TARGET_TOKEN=192
+
+python -m llava.eval.model_vqa_loader \
+    --model-path "${LLAVA_MODEL_PATH:-liuhaotian/llava-v1.5-7b}" \
+    --question-file ./playground/data/eval/vizwiz/llava_test.jsonl \
+    --image-folder ./playground/data/eval/vizwiz/test \
+    --answers-file ./playground/data/eval/vizwiz/answers/llava-v1.5-7b_192.jsonl \
+    --temperature 0 \
+    --conv-mode vicuna_v1
+
+python scripts/convert_vizwiz_for_submission.py \
+    --annotation-file ./playground/data/eval/vizwiz/llava_test.jsonl \
+    --result-file ./playground/data/eval/vizwiz/answers/llava-v1.5-7b_192.jsonl \
+    --result-upload-file ./playground/data/eval/vizwiz/answers_upload/llava-v1.5-7b_192.json
