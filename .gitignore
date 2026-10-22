@@ -32,3 +32,6 @@ __pycache__/
 *.pdf
 myPlayground/emptyTest/output/
 myPlayground/emptyTest/simplex_image_Qwen*/
+
+# Figures and tables displayed in the README.
+!/assets/paper/*.png

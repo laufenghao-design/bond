@@ -1,38 +1,70 @@
 # BOND
 
-This repository provides three components:
+**Layer-Wise Structural Reference Calibration with Synthetic Probes for Visual-Token Pruning**
 
-1. Offline reference-score generation.
-2. LLaVA-1.5-7B image inference and evaluation.
-3. Qwen2.5-VL-7B-Instruct image inference and evaluation.
+BOND is a training-free visual-token pruning framework. It calibrates attention
+with synthetic Simplex probes, combines significance and diversity for token
+selection, and reallocates a fixed aggregate token budget across decoder layers.
 
-The implementation keeps the original model classes, directory layout, and
-evaluation entrypoints, with the released selection and calibration paths
-aligned to the paper.
+This release provides offline reference-score generation and image inference
+and evaluation for **LLaVA-1.5-7B** and **Qwen2.5-VL-7B-Instruct**.
 
-```text
-llava/
-  model/                         LLaVA image inference and BOND selection
-  model_testFull/                 Original full-token reference recorder
-  eval/                          Original image evaluation entrypoints
-scripts/
-  v1_5/eval/sysEval/              Per-benchmark scripts at 64/128/192 tokens
-  convert_*.py                   Original result/submission converters
-playground/
-  data/eval/                     Dataset layout and original GQA/MME evaluator code
-Qwen2_5-VL/
-  Qwen2_5VL/                     Original Qwen model and reference recorder
-  eval_scripts/lmms_eval copy.sh  Original nine-benchmark image launcher
-lmms-eval/                       Local evaluation framework and image task definitions
-myPlayground/
-  emptyTest/                     Original probe generators and reference statistics
-```
+## Method Overview
 
-Only source code, task configurations, packaging files, and documentation are
-included. Checkpoints, datasets, probe images, reference CSVs, and predictions
-are supplied or generated separately.
+BOND combines three complementary components:
 
-## Environments
+- **Noise-based Attention Calibration (NAC):** constructs model- and layer-specific spatial references from synthetic Simplex probes, without a natural-image calibration corpus.
+- **Significance–diversity selection:** balances calibrated attention scores with feature-space diversity to preserve task-relevant evidence and complementary context.
+- **Symmetric Budget Reallocation (SBR):** shifts visual-token capacity from later to earlier decoder layers while preserving the aggregate layer-wise token budget.
+
+![BOND framework: synthetic-probe reference calibration, significance–diversity selection, and symmetric budget reallocation](assets/paper/method_overview.png)
+
+## Main Results
+
+The following tables reproduce the main-paper image results. **Norm. Avg. (%)**
+is the equally weighted mean of benchmark scores normalized by the corresponding
+dense-model scores. Budgets follow the paper's average layer-wise prunable
+patch-token convention.
+
+### LLaVA-1.5-7B
+
+BOND retains **97.7%** of dense normalized performance at a **64-token budget**,
+and **99.0% / 99.7%** at 128 / 192 tokens.
+
+![LLaVA-1.5-7B benchmark results at 64-, 128-, and 192-token budgets, reproduced from Table 1](assets/paper/results_llava15.png)
+
+### Qwen2.5-VL-7B
+
+BOND retains **90.2% / 82.0%** of dense normalized performance at the
+**20% / 10% budgets**, respectively.
+
+![Qwen2.5-VL-7B benchmark results at 10%, 20%, and 30% visual-token budgets, reproduced from Table 3](assets/paper/results_qwen25vl.png)
+
+## Qualitative Analysis
+
+Significance-only and diversity-only selectors produce different retention
+patterns. The examples below show how BOND combines calibrated significance
+with feature-space diversity.
+
+![Retained visual tokens and answers for significance-only, diversity-only, and BOND selectors](assets/paper/retained_tokens.png)
+
+## Ablation Study
+
+### Components and Calibration Probes
+
+The component and probe-source ablations examine calibration, significance,
+diversity, probe type, and Simplex scale under a 64-token budget.
+
+![Component and probe-source ablations on LLaVA-1.5-7B, reproduced from Table 7](assets/paper/ablation_components.png)
+
+### Hyperparameter Sensitivity
+
+The following plots show sensitivity to the budget reallocation shift and the
+significance–diversity weight under a 64-token budget.
+
+![Sensitivity to the budget reallocation shift and significance–diversity weight](assets/paper/hyperparameter_sensitivity.png)
+
+## Installation
 
 Use separate Python 3.10 environments for the two backbones. Run commands from
 the repository root. The LLaVA metadata retains its original Torch 2.1.2 and
@@ -154,6 +186,30 @@ The second argument selects the average retention budget: `0.1`, `0.2`, or
 `(2r, r, 0)` at layers `(0, 2, 26)`. The default remains `r=0.1`.
 `QWEN_REFERENCE_CSV_TEMPLATE` optionally overrides the default per-layer CSV
 path; its layer placeholder is `{}`.
+
+## Repository Layout
+
+```text
+llava/
+  model/                         LLaVA image inference and BOND selection
+  model_testFull/                 Original full-token reference recorder
+  eval/                          Original image evaluation entrypoints
+scripts/
+  v1_5/eval/sysEval/              Per-benchmark scripts at 64/128/192 tokens
+  convert_*.py                   Original result/submission converters
+playground/
+  data/eval/                     Dataset layout and original GQA/MME evaluator code
+Qwen2_5-VL/
+  Qwen2_5VL/                     Original Qwen model and reference recorder
+  eval_scripts/lmms_eval copy.sh  Original nine-benchmark image launcher
+lmms-eval/                       Local evaluation framework and image task definitions
+myPlayground/
+  emptyTest/                     Original probe generators and reference statistics
+```
+
+Only source code, task configurations, packaging files, and documentation are
+included. Checkpoints, datasets, probe images, reference CSVs, and predictions
+are supplied or generated separately.
 
 ## Development
 
