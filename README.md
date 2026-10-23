@@ -17,7 +17,11 @@ BOND combines three complementary components:
 - **Significance–diversity selection:** balances calibrated attention scores with feature-space diversity to preserve task-relevant evidence and complementary context.
 - **Symmetric Budget Reallocation (SBR):** shifts visual-token capacity from later to earlier decoder layers while preserving the aggregate layer-wise token budget.
 
-![BOND framework: synthetic-probe reference calibration, significance–diversity selection, and symmetric budget reallocation](assets/paper/method_overview.png)
+<p align="center">
+  <a href="assets/paper/method_overview.png">
+    <img src="assets/paper/method_overview.png" alt="BOND framework: synthetic-probe reference calibration, significance–diversity selection, and symmetric budget reallocation" width="774">
+  </a>
+</p>
 
 ## Main Results
 
@@ -31,14 +35,22 @@ patch-token convention.
 BOND retains **97.7%** of dense normalized performance at a **64-token budget**,
 and **99.0% / 99.7%** at 128 / 192 tokens.
 
-![LLaVA-1.5-7B benchmark results at 64-, 128-, and 192-token budgets, reproduced from Table 1](assets/paper/results_llava15.png)
+<p align="center">
+  <a href="assets/paper/results_llava15.png">
+    <img src="assets/paper/results_llava15.png" alt="LLaVA-1.5-7B benchmark results at 64-, 128-, and 192-token budgets, reproduced from Table 1" width="860">
+  </a>
+</p>
 
 ### Qwen2.5-VL-7B
 
 BOND retains **90.2% / 82.0%** of dense normalized performance at the
 **20% / 10% budgets**, respectively.
 
-![Qwen2.5-VL-7B benchmark results at 10%, 20%, and 30% visual-token budgets, reproduced from Table 3](assets/paper/results_qwen25vl.png)
+<p align="center">
+  <a href="assets/paper/results_qwen25vl.png">
+    <img src="assets/paper/results_qwen25vl.png" alt="Qwen2.5-VL-7B benchmark results at 10%, 20%, and 30% visual-token budgets, reproduced from Table 3" width="860">
+  </a>
+</p>
 
 ## Qualitative Analysis
 
@@ -46,7 +58,11 @@ Significance-only and diversity-only selectors produce different retention
 patterns. The examples below show how BOND combines calibrated significance
 with feature-space diversity.
 
-![Retained visual tokens and answers for significance-only, diversity-only, and BOND selectors](assets/paper/retained_tokens.png)
+<p align="center">
+  <a href="assets/paper/retained_tokens.png">
+    <img src="assets/paper/retained_tokens.png" alt="Retained visual tokens and answers for significance-only, diversity-only, and BOND selectors" width="370">
+  </a>
+</p>
 
 ## Ablation Study
 
@@ -55,14 +71,22 @@ with feature-space diversity.
 The component and probe-source ablations examine calibration, significance,
 diversity, probe type, and Simplex scale under a 64-token budget.
 
-![Component and probe-source ablations on LLaVA-1.5-7B, reproduced from Table 7](assets/paper/ablation_components.png)
+<p align="center">
+  <a href="assets/paper/ablation_components.png">
+    <img src="assets/paper/ablation_components.png" alt="Component and probe-source ablations on LLaVA-1.5-7B, reproduced from Table 7" width="410">
+  </a>
+</p>
 
 ### Hyperparameter Sensitivity
 
 The following plots show sensitivity to the budget reallocation shift and the
 significance–diversity weight under a 64-token budget.
 
-![Sensitivity to the budget reallocation shift and significance–diversity weight](assets/paper/hyperparameter_sensitivity.png)
+<p align="center">
+  <a href="assets/paper/hyperparameter_sensitivity.png">
+    <img src="assets/paper/hyperparameter_sensitivity.png" alt="Sensitivity to the budget reallocation shift and significance–diversity weight" width="390">
+  </a>
+</p>
 
 ## Installation
 
