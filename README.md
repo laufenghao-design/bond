@@ -52,42 +52,6 @@ BOND retains **90.2% / 82.0%** of dense normalized performance at the
   </a>
 </p>
 
-## Qualitative Analysis
-
-Significance-only and diversity-only selectors produce different retention
-patterns. The examples below show how BOND combines calibrated significance
-with feature-space diversity.
-
-<p align="center">
-  <a href="assets/paper/retained_tokens.png">
-    <img src="assets/paper/retained_tokens.png" alt="Retained visual tokens and answers for significance-only, diversity-only, and BOND selectors" width="370">
-  </a>
-</p>
-
-## Ablation Study
-
-### Components and Calibration Probes
-
-The component and probe-source ablations examine calibration, significance,
-diversity, probe type, and Simplex scale under a 64-token budget.
-
-<p align="center">
-  <a href="assets/paper/ablation_components.png">
-    <img src="assets/paper/ablation_components.png" alt="Component and probe-source ablations on LLaVA-1.5-7B, reproduced from Table 7" width="410">
-  </a>
-</p>
-
-### Hyperparameter Sensitivity
-
-The following plots show sensitivity to the budget reallocation shift and the
-significance–diversity weight under a 64-token budget.
-
-<p align="center">
-  <a href="assets/paper/hyperparameter_sensitivity.png">
-    <img src="assets/paper/hyperparameter_sensitivity.png" alt="Sensitivity to the budget reallocation shift and significance–diversity weight" width="390">
-  </a>
-</p>
-
 ## Installation
 
 Use separate Python 3.10 environments for the two backbones. Run commands from
